@@ -6,7 +6,7 @@ The programs here implement exhaustive enumeration of Hamiltonian paths and tour
 
 ## Contents
 - `app/` – main executable containing the necessary tests to verify the stated claims. 
-- `src/` – C++ source code for the exhaustive search algorithms.  
+- `src/` – functions implementing the exhaustive search algorithms.  
 - `headers/` – header files.  
 - `test/` – test executable with unit tests for the various functions defined in src/**.cpp.  
 

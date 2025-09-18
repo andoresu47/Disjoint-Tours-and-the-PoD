@@ -2,8 +2,7 @@
 This repository contains the code with the exhaustive search analysis required to prove Claims 3.1 and 4.1 of the *Disjoint Tours and the Price of Diversity* paper. 
 
 ## Overview
-The programs here implement exhaustive enumeration of Hamiltonian paths and tours under specific disjointness and cost constraints.  
-These experiments are used to confirm structural properties and exact bounds that underpin the theoretical results in the paper.  
+The programs here implement exhaustive enumeration of Hamiltonian paths and tours under specific disjointness and cost constraints. These experiments are used to confirm structural properties and exact bounds that underpin the theoretical results in the paper.  
 
 ## Contents
 - `app/` – main executable containing the necessary tests to verify the stated claims. 

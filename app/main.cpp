@@ -1,8 +1,20 @@
+/**
+ * @file main.cpp
+ * @brief Entry point for the Disjoint Tours and Price of Diversity experiments.
+ *
+ * This program runs exhaustive enumeration of Hamiltonian paths/tours under
+ * specific disjointness and cost constraints. It implements the exhaustive search 
+ * analysis used to support Observations 1 and 4 in the paper.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <hamiltonian_paths.h>
 #include <hamiltonian_cycles.h>
 
+/**
+ * @brief Verifies existence of edge-disjoint Hamiltonian (s, t)-paths for small n.
+ */
 int testDisjointPathsExist(){
     assert(!disjointPathsExist(3));
     assert(!disjointPathsExist(4));
@@ -15,6 +27,9 @@ int testDisjointPathsExist(){
     return 0;
 }
 
+/**
+ * @brief Verifies cost-bounded existence of edge-disjoint Hamiltonian (s, t)-paths for small n.
+ */
 int testDisjointPathsExistWithinBound(){
     assert(!disjointPathsExistWithinBound(6, 16.0 * (6 - 1) / 5.0));
     assert(!disjointPathsExistWithinBound(7, 16.0 * (7 - 1) / 5.0));
@@ -27,6 +42,9 @@ int testDisjointPathsExistWithinBound(){
     return 0;
 }
 
+/**
+ * @brief Verifies existence of edge-disjoint Hamiltonian cycles for small n.
+ */
 int testDisjointCyclesExist(){
     assert(!disjointCyclesExist(3));
     assert(!disjointCyclesExist(4));
@@ -39,6 +57,9 @@ int testDisjointCyclesExist(){
     return 0;
 }
 
+/**
+ * @brief Verifies cost-bounded existence of edge-disjoint Hamiltonian cycles for small n.
+ */
 int testDisjointCyclesExistWithinBound(){
     assert(!disjointCyclesExistWithinBound(5, 16.0 * 5 / 5.0));
     assert(!disjointCyclesExistWithinBound(6, 16.0 * 6 / 5.0));
@@ -53,18 +74,20 @@ int testDisjointCyclesExistWithinBound(){
     return 0;
 }
 
-// The program should end successfully only of all tests are passed, implying that the claims are proved. 
+/**
+ * @brief Program terminates successfully only if all tests pass, thereby validating the stated observations. 
+ */
 int main() {
-    // Proof of Claim 3.1
-    std::cout << "Proof of Claim 3.1:\n";
+    // Proof of Observation 1
+    std::cout << "Proof of Observation 1:\n";
     testDisjointPathsExist();
     std::cout << "\t(i) There is no pair of edge-disjoint Hamiltonian paths when n <= 5.\n";
     testDisjointPathsExistWithinBound();
     std::cout << "\t(ii) There is no pair of edge-disjoint Hamiltonian paths with total cost less than 16(n - 1)/5 when n in {6, 7, 8}.\n";
     std::cout << "\n";
 
-    // Proof of Claim 4.1
-    std::cout << "Proof of Claim 4.1:\n";
+    // Proof of Observation 4
+    std::cout << "Proof of Observation 4:\n";
     testDisjointCyclesExist();
     std::cout << "\t(i) There is no pair of edge-disjoint Hamiltonian cycles when n <= 4.\n";
     testDisjointCyclesExistWithinBound();

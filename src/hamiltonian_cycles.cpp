@@ -1,3 +1,12 @@
+/**
+ * @file hamiltonian_cycles.cpp
+ * @brief Implementation of Hamiltonian cycle utilities used in disjointness
+ *        and cost analysis for the Price of Diversity study.
+ *
+ * Each function declared in hamiltonian_cycles.h is implemented here.
+ * Comments focus on algorithmic details, proof-related context, and edge cases.
+ */
+
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -6,14 +15,17 @@
 
 
 /**
- * Answers whether the given cycle is odd-depth, meaning that all its segments have exclusively odd depth. 
- * Since the segments of a Hamiltonian cycle in the circle with uniformly spaced points have exclusively even or odd depth, 
- * we only test the depth of the first segment (1, 2). 
- * 
- * The depth of the first segment is equal to: #times 1 is covered + #times 2 is covered + 1 (if edge (1, 2) exists)
- * 
- * Note: There are some cases when a cycle can be odd-depth or even-depth (with the same cost) depending on whether we draw 
- * an edge of length ~n/2 in clockwise or anti-clockwise direction. This function treats those cases as odd-depth cycles.
+ * Implementation note:
+ * A Hamiltonian cycle in the circle with uniformly spaced points has all segments
+ * of either even or odd depth. To classify a cycle, it suffices to test the depth
+ * of the first segment (1, 2). The "depth" is computed as:
+ *
+ *   (# times vertex 1 is covered) + (# times vertex 2 is covered)
+ *   + 1 if the edge (1, 2) itself appears.
+ *
+ * Some cycles can be realized with equal cost as either even- or odd-depth
+ * depending on orientation of edges of length ceil(n/2). By convention, these are
+ * treated as odd-depth cycles.
  */
 bool isOddDepthCycle(const std::vector<int>& cycle){
     int n = cycle.size();
@@ -32,14 +44,18 @@ bool isOddDepthCycle(const std::vector<int>& cycle){
     }
 
     int lastDiff = std::abs(cycle.at(n - 1) - 1);
-    if (lastDiff < n - lastDiff) depth++;                           // 2 is covered by an edge containing 1 if it does not cycle back. Includes the case when (1, 2) is an edge. 
+    if (lastDiff < n - lastDiff) depth++;                       // 2 is covered by an edge containing 1 if it does not cycle back. Includes the case when (1, 2) is an edge. 
 
     return depth % 2;       // Evaluates to true if depth is odd. 
 }
 
 /**
- * Computes the cost of a Hamiltonian cycle of length n in the circle with uniformly spaced points. 
- * The cost of an edge (i, j) is given by min(abs(i - j), n - abs(i - j)) where i and j are integer labels in [n]. 
+ * Implementation note:
+ * The cost of an edge (i, j) is defined as:
+ *     min(|i - j|, n - |i - j|)
+ * where n is the cycle length.
+ * The cycle cost is the sum over all edges, including the closing edge
+ * from the last vertex back to 1.
  */
 int computeCostCycle(const std::vector<int>& cycle){
     assert(cycle.at(0) == 1);
@@ -59,7 +75,9 @@ int computeCostCycle(const std::vector<int>& cycle){
 }
 
 /**
- * Answers whether the total cost of two cycles is strictly less than a given bound. 
+ * Implementation note:
+ * This function simply adds the costs of two cycles (computed via computeCostCycle)
+ * and compares against the given threshold.
  */
 bool areCyclesWithinBound(const std::vector<int>& cycle1, const std::vector<int>& cycle2, const double bound){
     int costCycle1 = computeCostCycle(cycle1);
@@ -68,7 +86,9 @@ bool areCyclesWithinBound(const std::vector<int>& cycle1, const std::vector<int>
 }
 
 /**
- * Checks whether an edge, represented by its head and tail vertices, is contained in a cycle. 
+ * Implementation note:
+ * Tests whether an undirected edge (tail, head) (or (head, tail)) appears in the given cycle.
+ * Handles both the closing edge (1, cycle[n-1]) and internal edges.
  */
 bool edgeExistsInCycle(int tail, int head, const std::vector<int>& cycle){
     int n = cycle.size();
@@ -84,7 +104,9 @@ bool edgeExistsInCycle(int tail, int head, const std::vector<int>& cycle){
 }
 
 /**
- * Checks whether two cycles (in canonical form) are disjoint by testing if any edge of the first cycle is present in the second. 
+ * Implementation note:
+ * Two cycles are disjoint if no edge of one cycle appears in the other.
+ * This function iterates over edges of cycle1 and checks membership in cycle2.
  */
 bool areDisjointCycles(const std::vector<int>& cycle1, const std::vector<int>& cycle2){
     assert(cycle1.size() == cycle2.size());
@@ -102,8 +124,11 @@ bool areDisjointCycles(const std::vector<int>& cycle1, const std::vector<int>& c
 }
 
 /**
- * Checks whether there exist two disjoint Hamiltonian cycles of length n in the circle with uniformly spaced points.
- * A cycle is represented by a permutation of the integers [n] of the form (1, ...).   
+ * Implementation note:
+ * Enumerates all unique Hamiltonian cycles of size n, represented as
+ * permutations of [n] beginning with 1 (canonical form).
+ * Uses std::next_permutation to generate candidates, skipping symmetric reversals.
+ * Tests all pairs for disjointness.
  */
 bool disjointCyclesExist(const int n){
     // Create and populate the identity permutation (1, 2, ..., n)
@@ -136,8 +161,9 @@ bool disjointCyclesExist(const int n){
 }
 
 /**
- * Checks whether there exist two odd-depth disjoint Hamiltonian cycles of length n in the circle with uniformly spaced points with total cost below a given bound.
- * A cycle is represented by a permutation of the integers [n] of the form (1, ...).   
+ * Implementation note:
+ * Same as disjointCyclesExist, but requires both cycles to be odd-depth
+ * and the total cost to be below the given threshold.
  */
 bool disjointCyclesExistWithinBound(const int n, const double bound){
     // Create and populate the identity permutation (1, 2, ..., n)

@@ -1,8 +1,24 @@
+/**
+ * @file test_main.cpp
+ * @brief Unit tests for Hamiltonian path and cycle functions.
+ *
+ * This file validates correctness of the implementations in
+ * hamiltonian_paths.cpp and hamiltonian_cycles.cpp.
+ * Each test function targets a specific function and uses
+ * assertions on hand-crafted examples.
+ *
+ * The program terminates successfully only if all tests pass.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <hamiltonian_paths.h>
 #include <hamiltonian_cycles.h>
 
+/**
+ * @brief Tests computeCostPath() on several fixed Hamiltonian paths
+ * with known costs.
+ */
 int testComputeCostPath(){
     std::vector<int> testPath1{1, 2, 3, 4, 5, 6};                   // Cost should be 5
     std::vector<int> testPath2{1, 3, 5, 2, 4, 6};                   // Cost should be 11
@@ -19,6 +35,10 @@ int testComputeCostPath(){
     return 0;
 }
 
+/**
+ * @brief Tests computeCostCycle() on several fixed Hamiltonian cycles
+ * with known costs.
+ */
 int testComputeCostCycle(){
     std::vector<int> testCycle1{1, 3, 2, 5, 4};                      // Cost should be 9
     std::vector<int> testCycle2{1, 2, 3, 4, 5, 6};                   // Cost should be 6
@@ -37,6 +57,10 @@ int testComputeCostCycle(){
     return 0;
 }
 
+/**
+ * @brief Tests arePathsWithinBound() with pairs of paths
+ * where the combined cost is above/below given thresholds.
+ */
 int testArePathsWithinBound(){
     int n = 8;
     std::vector<int> testPath1{1, 2, 3, 4, 5, 6, 7, 8};                 // Cost: 7
@@ -53,6 +77,10 @@ int testArePathsWithinBound(){
     return 0;
 }
 
+/**
+ * @brief Tests areCyclesWithinBound() with pairs of cycles
+ * where the combined cost is above/below given thresholds.
+ */
 int testAreCyclesWithinBound(){
     int n = 8;
     std::vector<int> testCycle1{1, 3, 4, 5, 6, 7, 8, 2};                    // Cost: 10
@@ -68,6 +96,9 @@ int testAreCyclesWithinBound(){
     return 0;
 }
 
+/**
+ * @brief Tests edgeExistsInPath() on positive and negative cases.
+ */
 int testEdgeExistsInPath(){
     std::vector<int> testPath{1, 3, 2, 4};
 
@@ -88,6 +119,9 @@ int testEdgeExistsInPath(){
     return 0;
 }
 
+/**
+ * @brief Tests edgeExistsInCycle() on positive and negative cases.
+ */
 int testEdgeExistsInCycle(){
     std::vector<int> testCycle{1, 3, 2, 4};
 
@@ -108,6 +142,10 @@ int testEdgeExistsInCycle(){
     return 0;
 }
 
+/**
+ * @brief Tests areDisjointPaths() on pairs of paths
+ * that are and are not edge-disjoint.
+ */
 int testAreDisjointPaths(){
     std::vector<int> testPath1{1, 2, 3, 4, 5, 6};
     std::vector<int> testPath2{1, 3, 5, 2, 4, 6};
@@ -120,6 +158,10 @@ int testAreDisjointPaths(){
     return 0;
 }
 
+/**
+ * @brief Tests areDisjointCycles() on pairs of cycles
+ * that are and are not edge-disjoint.
+ */
 int testAreDisjointCycles(){
     std::vector<int> testCycle1{1, 3, 4, 5, 6, 7, 8, 2};
     std::vector<int> testCycle2{1, 7, 5, 3, 2, 4, 6, 8};
@@ -134,6 +176,10 @@ int testAreDisjointCycles(){
     return 0;
 }
 
+/**
+ * @brief Tests isOddDepthCycle() on cycles that are even,
+ * odd, or ambiguous-depth.
+ */
 int testIsOddDepthCycle(){
     std::vector<int> testCycle1{1, 3, 2, 5, 4};                             // Even
     std::vector<int> testCycle2{1, 3, 4, 5, 6, 7, 8, 2};                    // Odd
@@ -148,6 +194,10 @@ int testIsOddDepthCycle(){
     return 0;
 }
 
+/**
+ * @brief Runs all test functions and prints a progress report.
+ * The program succeeds only if every assertion passes.
+ */
 int main(){
     // Tests for hamiltonian_paths.cpp
     std::cout << "Path tests:\n";

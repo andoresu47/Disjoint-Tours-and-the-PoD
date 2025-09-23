@@ -1,3 +1,12 @@
+/**
+ * @file hamiltonian_paths.cpp
+ * @brief Implementation of Hamiltonian path utilities used in disjointness
+ *        and cost analysis for the Price of Diversity study.
+ *
+ * Each function declared in hamiltonian_paths.h is implemented here.
+ * Comments focus on algorithmic details, proof-related context, and edge cases.
+ */
+
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -5,8 +14,10 @@
 #include <hamiltonian_paths.h>
 
 /**
- * Computes the cost of a Hamiltonian (s, t)-path of length n in the line with uniformly spaced points. 
- * The cost of an edge (i, j) is given by abs(i - j), where i and j are integer labels in [n]. 
+ * Implementation note:
+ * The cost of an edge (i, j) in the line is simply |i - j|,
+ * where i and j are integer labels in [n].
+ * The total path cost is the sum of costs of all edges.
  */
 int computeCostPath(const std::vector<int>& path){
     int n = path.size();
@@ -18,7 +29,8 @@ int computeCostPath(const std::vector<int>& path){
 }
 
 /**
- * Answers whether the total cost of two paths is strictly less than a given bound. 
+ * Implementation note:
+ * Adds the costs of two paths and compares with the given threshold.
  */
 bool arePathsWithinBound(const std::vector<int>& path1, const std::vector<int>& path2, const double bound){
     int costPath1 = computeCostPath(path1);
@@ -27,7 +39,9 @@ bool arePathsWithinBound(const std::vector<int>& path1, const std::vector<int>& 
 }
 
 /**
- * Checks whether an edge, represented by its head and tail vertices, is contained in a path. 
+ * Implementation note:
+ * Tests whether an undirected edge (tail, head) (or (head, tail)) is present in a path.
+ * Only internal edges (between consecutive vertices) need to be checked.
  */
 bool edgeExistsInPath(int tail, int head, const std::vector<int>& path){
     int n = path.size();
@@ -40,7 +54,9 @@ bool edgeExistsInPath(int tail, int head, const std::vector<int>& path){
 }
 
 /**
- * Checks whether two cycles are disjoint by testing if any edge of the first path is present in the second. 
+ * Implementation note:
+ * Two paths are disjoint if no edge of one path is present in the other.
+ * This function iterates over edges of path1 and checks membership in path2.
  */
 bool areDisjointPaths(const std::vector<int>& path1, const std::vector<int>& path2){
     assert(path1.size() == path2.size());
@@ -55,8 +71,11 @@ bool areDisjointPaths(const std::vector<int>& path1, const std::vector<int>& pat
 }
 
 /**
- * Checks whether there exist two disjoint Hamiltonian (s, t)-paths of length n in the line with uniformly spaced points.
- * An (s, t)-path is represented by a permutation of the integers [n] with s = 1 and t = n.  
+ * Implementation note:
+ * Enumerates all Hamiltonian paths of size n, represented as
+ * permutations of [n] with endpoints fixed at 1 and n.
+ * Uses std::next_permutation to generate candidates.
+ * Tests all pairs for disjointness.
  */
 bool disjointPathsExist(const int n){
     // Create and populate the identity permutation (1, 2, ..., n)
@@ -81,8 +100,9 @@ bool disjointPathsExist(const int n){
 }
 
 /**
- * Checks whether there exist two disjoint Hamiltonian (s, t)-paths of length n in the line with uniformly spaced points with total cost below a given bound. 
- * An (s, t)-path is represented by a permutation of the integers [n] with s = 1 and t = n.  
+ * Implementation note:
+ * Same as disjointPathsExist, but requires the total cost of the two disjoint
+ * paths to be below the given threshold.
  */
 bool disjointPathsExistWithinBound(const int n, const double bound){
     // Create and populate the identity permutation (1, 2, ..., n)

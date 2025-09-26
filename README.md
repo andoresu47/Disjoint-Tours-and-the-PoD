@@ -8,15 +8,23 @@ The programs here implement exhaustive enumeration of Hamiltonian paths and tour
 - `app/` – main executable containing the necessary tests to verify the stated claims. 
 - `src/` – functions implementing the exhaustive search algorithms.  
 - `headers/` – header files.  
-- `test/` – test executable with unit tests for the various functions defined in src/**.cpp.  
+- `test/` – test executable with unit tests for the various functions defined in src.  
 
 ## Usage
 To compile the main code, run:
 ```bash
-g++ -O2 -std=c++17 /app/main.cpp /src/*.cpp -o main -I/headers
+make main
+```
+or
+```bash
+g++ -O2 -std=c++17 ./app/main.cpp ./src/cycles/*.cpp ./src/paths/*.cpp -o main -I./headers
 ```
 
 To compile the tests, run:
 ```bash
-g++ -O2 -std=c++17 /test/testmain.cpp /src/*.cpp -o testmain -I/headers
+make testmain
+```
+or:
+```bash
+g++ -O2 -std=c++17 /test/testmain.cpp ./src/cycles/*.cpp ./src/paths/*.cpp -o main -I./headers
 ```
